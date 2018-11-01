@@ -9,42 +9,24 @@ def data_collector(zero_dist):
 
     chrono = Timer.Chrono()
 
-    i = 0
-    k = 0
-    water_depth = []
-    depth = []
-    while True:
-        chrono.reset()
+    chrono.reset()
 
-        trigger(1)
-        time.sleep_us(10)
-        trigger(0)
+    trigger(1)
+    time.sleep_us(10)
+    trigger(0)
 
-        while echo() == 0:
-            pass
+    while echo() == 0:
+        pass
 
-        chrono.start()
+    chrono.start()
 
-        while echo() == 1:
-            pass
+    while echo() == 1:
+        pass
 
-        chrono.stop()
+    chrono.stop()
 
-        distance = round(chrono.read_us() / 148.0,2)
-        water_level = round(zero_dist - distance,2)
-        water_depth.insert(i,water_level)
+    distance = round(chrono.read_us() / 148.0,2)
+    water_level = round(zero_dist - distance,2)
 
 
-        i = i + 1
-        if i == 270:
-            i = 0
-            if k < 25:
-                depth_cal = round(sum(water_depth)/len(water_depth),2)
-                depth.insert(k,depth_cal)
-                k = k + 1
-                water_depth.clear()
-            else:
-                break
-
-        time.sleep_ms(80)
-    return depth
+    return water_level
