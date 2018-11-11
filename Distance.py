@@ -1,5 +1,17 @@
 import time
 from machine import Pin, Timer
+zero_dist = 11.13
+
+def calculate_median(l):
+    j = 0
+    l = sorted(l)
+    l_len = len(l)
+    if l_len < 1:
+        return None
+    if l_len % 2 == 0:
+        return  (l[(l_len-1)//2] + l[(l_len+1)//2]) // 2
+    else:
+        return l[(l_len-1)//2]
 
 def data_collector(zero_dist):
     echo = Pin(Pin.exp_board.G8, mode=Pin.IN)
@@ -9,24 +21,38 @@ def data_collector(zero_dist):
 
     chrono = Timer.Chrono()
 
-    chrono.reset()
+    i = 0
+    water_depth = []
 
-    trigger(1)
-    time.sleep_us(10)
-    trigger(0)
+    while True:
+        chrono.reset()
 
-    while echo() == 0:
-        pass
+        trigger(1)
+        time.sleep_us(10)
+        trigger(0)
 
-    chrono.start()
+        while echo() == 0:
+            pass
 
-    while echo() == 1:
-        pass
+        chrono.start()
 
-    chrono.stop()
+        while echo() == 1:
+            pass
 
-    distance = round(chrono.read_us() / 148.0,2)
-    water_level = round(zero_dist - distance,2)
+        chrono.stop()
+
+        distance = round(chrono.read_us() / 148.0,2)
+        water_level = zero_dist - distance
+        water_depth.insert(i,water_level)
 
 
-    return water_level
+        i = i + 1
+        if i == 13:
+            i = 0
+            depth = calculate_median(water_depth)
+            water_depth.clear()
+            break
+
+        time.sleep_ms(80)
+
+    return depth
