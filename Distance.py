@@ -3,7 +3,6 @@ from machine import Pin, Timer
 zero_dist = 11.13
 
 def calculate_median(l):
-    j = 0
     l = sorted(l)
     l_len = len(l)
     if l_len < 1:
