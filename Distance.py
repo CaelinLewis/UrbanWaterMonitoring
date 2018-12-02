@@ -1,6 +1,8 @@
 import time
 from machine import Pin, Timer
-zero_dist = 11.13
+import zeroDistance
+
+
 
 def calculate_median(l):
     l = sorted(l)
@@ -11,6 +13,8 @@ def calculate_median(l):
         return  (l[(l_len-1)//2] + l[(l_len+1)//2]) // 2
     else:
         return l[(l_len-1)//2]
+
+zero_dist = zeroDistance()
 
 def data_collector(zero_dist):
     echo = Pin(Pin.exp_board.G8, mode=Pin.IN)
@@ -46,7 +50,7 @@ def data_collector(zero_dist):
 
 
         i = i + 1
-        if i == 13:
+        if i == 5:
             i = 0
             depth = calculate_median(water_depth)
             water_depth.clear()
