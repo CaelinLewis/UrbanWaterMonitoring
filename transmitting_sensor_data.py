@@ -1,4 +1,3 @@
-
 from network import LoRa
 import socket
 import time
@@ -76,14 +75,11 @@ def send_env_data():
             data_to_send = data_collector(zero_dist) # Call the function that collects the sensor data
             data = str(data_to_send)
             print("Data sent")
-            print(data)
-            s.send(data)
+            print(data.encode())
+            s.send(data.encode())
             time.sleep(60)
-            idx = idx + 1
-        print("Entering Sleep")
-        machine.deepsleep(300000)
-        idx = 0
-
+            idx = inc(idx, 10)
+        machine.deepsleep(900000) # Deep sleep for 5 minutes
 
 
 
