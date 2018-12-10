@@ -8,6 +8,7 @@ from time import sleep
 from machine import Pin, Timer
 import machine
 
+#Function created to calculate median throughout program
 def calculate_median(l):
     l = sorted(l)
     l_len = len(l)
@@ -18,7 +19,7 @@ def calculate_median(l):
     else:
         return l[(l_len-1)//2]
 
-
+#Function created to zero the sensor unit relative to location in pipe
 def zeroDistance():
     echo = Pin(Pin.exp_board.G8, mode=Pin.IN)
     trigger = Pin(Pin.exp_board.G7, mode=Pin.OUT)
@@ -47,7 +48,7 @@ def zeroDistance():
         time.sleep_ms(80)
     return zeroDist
 
-
+#Function created to collect water depth
 def data_collector(zero_dist):
     echo = Pin(Pin.exp_board.G8, mode=Pin.IN)
     trigger = Pin(Pin.exp_board.G7, mode=Pin.OUT)
